@@ -1,7 +1,8 @@
 
 //  1: Test API response of malicious data
 //  2: Test API response of utf-8 encoded, malicious data
-var runTestNum = 1;
+//  3: Test API response of json escaped, malicious data
+var runTestNum = 3;
 
 // Malicious data
 if (runTestNum == 1) {
@@ -16,12 +17,21 @@ if (runTestNum == 2) {
     var testData = "\x7B\x22\x66\x6F\x6F\x22\x3A\x20\x22\x3C\x2F\x73\x63\x72\x69\x70\x74\x3E\x3C\x73\x63\x72\x69\x70\x74\x3E\x61\x6C\x65\x72\x74\x28\x27\x58\x53\x53\x27\x29\x3C\x2F\x73\x63\x72\x69\x70\x74\x3E\x22\x7D";
 }
 
+// json escaped, malicious data
+if (runTestNum == 3) {
+    // Data encoded: {"foo": "</script><script>alert('XSS')</script>"}
+    var testData = "{\"foo\": \"</script><script>alert('XSS')</script>\"}"
+}
+
 // Represents the API response of the test data 
 switch(runTestNum) {
     case 1:
         var apiResponse = JSON.stringify(testData);
         break;
     case 2:
+        var apiResponse = testData;
+        break;
+    case 3:
         var apiResponse = testData;
         break;
 }
